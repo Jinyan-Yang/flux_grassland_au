@@ -58,11 +58,25 @@ fn.ls[[2]] <- data.frame(flux.nm = flux.fn.vec[2],
 flux.met.ls <- lapply(fn.ls,get.nc.func)
 flux.met.df <- do.call(rbind,flux.met.ls)
 flux.met.df$Date <- as.Date(flux.met.df$DateTime)
-saveRDS(flux.met.df,'flux_stp_ync_processed.rds')
+# read modis grom google
+modis.lai.df <- read.csv('data/modis_lai_stp_ync.csv')
+modis.lai.df$Date <- as.Date(modis.lai.df$system.time_start,'%B %d, %Y')
+names(modis.lai.df) <- c('date.default','lai_modis_ync','lai_modis_stp','Date')
+modis.lai.stp <- modis.lai.df[,c('Date','lai_modis_stp')]
+names(modis.lai.stp) <- c('Date','lai_modis_google')
+modis.lai.stp$Site <- 'AU-Stp'
+modis.lai.ync <- modis.lai.df[,c('Date','lai_modis_ync')]
+names(modis.lai.ync) <- c('Date','lai_modis_google')
+modis.lai.ync$Site <- 'AU-Ync'
+modis.google.df <- rbind(modis.lai.stp,modis.lai.ync)
+modis.google.df$lai_modis_google <- modis.google.df$lai_modis_google*0.1
+# 
+flux.met.df.google.lai <- merge(flux.met.df,modis.google.df,by=c('Date','Site'),all.x=T)
+saveRDS(flux.met.df.google.lai,'flux_stp_ync_processed.rds')
 
 # get daily values
 library(doBy)
-flux.met.df.daily <- summaryBy(.~ Date + Site, data = flux.met.df,
+flux.met.df.daily <- summaryBy(.~ Date + Site, data = flux.met.df.google.lai,
                                FUN=mean,na.rm=T,keep.names =T,id = c('fn.met','fn'))
 # convert to proper units
 s2d <- 24*3600

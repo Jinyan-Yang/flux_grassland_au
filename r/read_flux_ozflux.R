@@ -9,3 +9,5 @@ start.time <- gsub('days since ','',start.time)
 as.POSIXlt( ncvar_get(nc.file,'time')*24*3600,
             origin = start.time,tz = 'GMT')
 
+nc.file$dim$latitude
+nc.file$dim$longitude
