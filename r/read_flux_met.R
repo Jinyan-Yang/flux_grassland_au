@@ -130,11 +130,15 @@ plot.fulx.func <- function(site.nm){
        xlab='',ylab=expression(GPP~(g~C~m^-2~d^-1)),main = site.nm)
   abline(h=0,lty='dotted',col='grey',lwd=3)
   par(new=T)
-  plot(LAI_sentinel~Date,data = plot.df,
+  # if(site.nm =='AU-Ync'){
+  #   plot.df$LAI_sentinel[1:180] <- NA
+  #   plot.df$LAI_modis[1:180] <- NA
+  # }
+  plot(LAI_sentinel~Date,data = plot.df[!is.na(plot.df$LAI_sentinel),],
        type='l',col='darkseagreen',
        ann=F,axes=F,lwd=2)
   
-  points(LAI_modis~Date,data = plot.df,
+  points(LAI_modis~Date,data = plot.df[!is.na(plot.df$LAI_modis),],
          type='l',col='darkseagreen',lty='dashed',lwd=2)
   
   legend('topright',legend = c('GPP',"Sentinel",'MODIS'),lty=c('solid','solid','dashed'),
