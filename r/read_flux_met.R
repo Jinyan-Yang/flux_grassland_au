@@ -89,7 +89,7 @@ flux.met.df.daily$rain_mm_d <- flux.met.df.daily$rain_kg_m2_s *s2d
 
 # make plots####
 # function to make plot
-plot.fulx.func <- function(site.nm){
+plot.fulx.func <- function(site.nm,use.google=FALSE){
   # GPP and lai
   plot.df <- flux.met.df.daily[flux.met.df.daily$Site == site.nm,]
   par(mar = c(5,5,1,5),mfrow=c(4,1))
@@ -106,8 +106,13 @@ plot.fulx.func <- function(site.nm){
        type='l',col='darkseagreen',
        ann=F,axes=F,lwd=2)
   
+if(use.google==FALSE){
   points(LAI_modis~Date,data = plot.df[!is.na(plot.df$LAI_modis),],
          type='l',col='darkseagreen',lty='dashed',lwd=2)
+}else{
+  points(lai_modis_google~Date,data = plot.df,
+         col='darkseagreen',pch=16)
+}
   
   legend('topright',legend = c('GPP',"Sentinel",'MODIS'),lty=c('solid','solid','dashed'),
          col=c('black','darkseagreen','darkseagreen'),bty='n')
@@ -127,8 +132,13 @@ plot.fulx.func <- function(site.nm){
        type='l',col='darkseagreen',
        ann=F,axes=F,lwd=2)
   
-  points(LAI_modis~Date,data = plot.df,
-         type='l',col='darkseagreen',lty='dashed',lwd=2)
+  if(use.google==FALSE){
+    points(LAI_modis~Date,data = plot.df[!is.na(plot.df$LAI_modis),],
+           type='l',col='darkseagreen',lty='dashed',lwd=2)
+  }else{
+    points(lai_modis_google~Date,data = plot.df,
+           col='darkseagreen',pch=16)
+  }
   par(new=T)
   plot(rain_mm_d~Date,data = plot.df,
        type='s',col='blue',
@@ -147,5 +157,11 @@ plot.fulx.func <- function(site.nm){
 pdf('stp_ync_flux.pdf',width = 8,height = 8*4*.618)
 plot.fulx.func('AU-Stp')
 plot.fulx.func('AU-Ync')
+dev.off()
+
+# plot.fulx.func('AU-Stp')
+pdf('stp_ync_flux_google_LAI.pdf',width = 8,height = 8*4*.618)
+plot.fulx.func('AU-Stp',use.google = T)
+plot.fulx.func('AU-Ync',use.google = T)
 dev.off()
 
