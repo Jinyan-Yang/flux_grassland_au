@@ -1,4 +1,7 @@
-# read flux data
+# link to get anna's flux data
+# http://dap.nci.org.au/thredds/remoteCatalogService?catalog=http://dapds00.nci.org.au/thredds/catalog/ks32/CLEX_Data/PLUMBER2/v1-0/catalog.xml
+
+# read flux data###################################################
 library(ncdf4)
 get.nc.func <- function(fn.df){
   # read flux data
@@ -56,7 +59,6 @@ flux.met.df$Date <- as.Date(flux.met.df$DateTime)
 
 # get daily values
 library(doBy)
-
 flux.met.df.daily <- summaryBy(.~ Date + Site, data = flux.met.df,
                                FUN=mean,na.rm=T,keep.names =T,id = c('fn.met','fn'))
 # convert to proper units
@@ -67,60 +69,9 @@ g2mm <- 1e-3
 flux.met.df.daily$GPP_g_m2_d <- flux.met.df.daily$GPP_umol_m2_s *s2d * mumol2g
 flux.met.df.daily$et_mm_d <- flux.met.df.daily$le_w_m2 * s2d /j2g *g2mm
 flux.met.df.daily$rain_mm_d <- flux.met.df.daily$rain_kg_m2_s *s2d
-# flux.met.df.daily$LAI_sentinel[flux.met.df.daily$Site =='AU-Ync'] <- 
-#   flux.met.df.daily$LAI_sentinel[flux.met.df.daily$Site =='AU-Ync']
-# make plots####
-# # GPP and lai
-# par(mar = c(5,5,1,5),mfrow=c(4,1))
-# plot.df <- flux.met.df.daily[flux.met.df.daily$Site=='AU-Ync',]
-# plot(GPP_g_m2_d~Date,data = plot.df,
-#      type='l',
-#      xlab='',ylab=expression(GPP~(g~C~m^-2~d^-1)),main = 'AU-Stp')
-# abline(h=0,lty='dotted',col='grey',lwd=3)
-# par(new=T)
-# plot(LAI_sentinel~Date,data = plot.df,
-#      type='l',col='darkseagreen',
-#      ann=F,axes=F,lwd=2)
-# 
-# points(LAI_modis~Date,data = plot.df,
-#        type='l',col='darkseagreen',lty='dashed',lwd=2)
-# 
-# legend('topright',legend = c('GPP',"Sentinel",'MODIS'),lty=c('solid','solid','dashed'),
-#        col=c('black','darkseagreen','darkseagreen'),bty='n')
-# axis(4,at = seq(0,3,0.5),labels = seq(0,3,0.5))
-# mtext('LAI',side = 4,line=2)
-# # scatter gpp lai
-# plot(GPP_g_m2_d~LAI_sentinel,data = plot.df)
-# 
-# # et and LAI
-# # par(mar = c(5,5,1,5))
-# plot(et_mm_d~Date,data = plot.df,
-#      type='l',
-#      xlab='',ylab=expression(ET~(mm~d^-1)))
-# abline(h=0,lty='dotted',col='grey',lwd=3)
-# par(new=T)
-# plot(LAI_sentinel~Date,data = plot.df,
-#      type='l',col='darkseagreen',
-#      ann=F,axes=F,lwd=2)
-# 
-# points(LAI_modis~Date,data = plot.df,
-#        type='l',col='darkseagreen',lty='dashed',lwd=2)
-# par(new=T)
-# plot(rain_mm_d~Date,data = plot.df,
-#      type='s',col='blue',
-#      ann=F,axes=F,lwd=2)
-# 
-# 
-# legend('topright',legend = c('ET',"Sentinel",'MODIS'),lty=c('solid','solid','dashed'),
-#        col=c('black','darkseagreen','darkseagreen'),bty='n')
-# axis(4,at = seq(0,3,0.5),labels = seq(0,3,0.5))
-# mtext('LAI',side = 4,line=2)
-# # 
-# plot(et_mm_d~LAI_sentinel,data = plot.df)
-# # plot(GPP_g_m2_d~LAI_modis,data = plot.df)
-# # abline(a=0,b=1)
 
-# 
+# make plots####
+# function to make plot
 plot.fulx.func <- function(site.nm){
   # GPP and lai
   plot.df <- flux.met.df.daily[flux.met.df.daily$Site == site.nm,]
