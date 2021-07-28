@@ -15,7 +15,7 @@ get.nc.func <- function(fn.df){
   flux.df <- data.frame(Site = substr(flux.fn,6,11),
                         DateTime = as.POSIXlt( ncvar_get(nc.file,'time'),
                                                origin = start.time,tz = 'GMT'),
-                        le_w_m2 = ncvar_get(nc.file,'Qle_cor'),
+                        le_w_m2 = ncvar_get(nc.file,'Qle'),
                         GPP_umol_m2_s = ncvar_get(nc.file,'GPP'),
                         GPP_qc= ncvar_get(nc.file,'GPP_qc'),
                         fn = flux.fn
@@ -38,6 +38,8 @@ get.nc.func <- function(fn.df){
                        Tair = ncvar_get(nc.file.met,'Tair'),
                        RH = ncvar_get(nc.file.met,'RH'),
                        rain_kg_m2_s = ncvar_get(nc.file.met,'Precip'),
+                       sw_w_m2 = ncvar_get(nc.file.met,'SWdown'),
+                       lw_w_m2 = ncvar_get(nc.file.met,'LWdown'),
                        fn.met = met.fn)
   # merge flux and met
   flux.met.df <- merge(flux.df,met.df,by='DateTime',all=T)
@@ -56,6 +58,7 @@ fn.ls[[2]] <- data.frame(flux.nm = flux.fn.vec[2],
 flux.met.ls <- lapply(fn.ls,get.nc.func)
 flux.met.df <- do.call(rbind,flux.met.ls)
 flux.met.df$Date <- as.Date(flux.met.df$DateTime)
+saveRDS(flux.met.df,'flux_stp_ync_processed.rds')
 
 # get daily values
 library(doBy)
