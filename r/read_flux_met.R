@@ -72,7 +72,7 @@ modis.google.df <- rbind(modis.lai.stp,modis.lai.ync)
 modis.google.df$lai_modis_google <- modis.google.df$lai_modis_google*0.1
 # 
 flux.met.df.google.lai <- merge(flux.met.df,modis.google.df,by=c('Date','Site'),all.x=T)
-saveRDS(flux.met.df.google.lai,'flux_stp_ync_processed.rds')
+saveRDS(flux.met.df.google.lai,'cache/flux_stp_ync_processed.rds')
 
 # get daily values
 library(doBy)
