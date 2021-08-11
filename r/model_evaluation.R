@@ -42,7 +42,10 @@ hufkens.df.grass$Date <- as.Date(hufkens.df.grass$doy, origin = paste0(hufkens.d
 # get model outputs sgs
 hufkens.df.sgs <- read.csv('S:/storage/repo/Mofy/Mofy-master/stp_sgs/output.csv',skip=0,header = T)
 hufkens.df.sgs$Date <- as.Date(hufkens.df.sgs$doy, origin = paste0(hufkens.df.sgs$year,'-1-1'))
-
+# get model outputs original
+hufkens.df.ori <- read.csv('S:/storage/repo/Mofy/Mofy-master/stp_original/output.csv',skip=0,header = T)
+hufkens.df.ori$Date <- as.Date(hufkens.df.ori$doy, origin = paste0(hufkens.df.ori$year,'-1-1'))
+plot.compare.func(hufkens.df.ori,flux.met.df.daily)
 
 pdf('model_evaluation.pdf',width = 8,height = 8*.618*3)
 plot.compare.func(hufkens.df.grass,flux.met.df.daily)
