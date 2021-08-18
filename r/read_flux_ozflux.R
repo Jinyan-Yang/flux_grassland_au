@@ -2,7 +2,6 @@
 library(ncdf4)
 # 
 # flux.fn <- 
-nc.file$var$Precip
 # read the nc files from ozflux####
 get.flux.nc.func <- function(flux.fn){
   nc.file <- nc_open(flux.fn)
