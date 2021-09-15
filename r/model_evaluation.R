@@ -1,4 +1,4 @@
-plot.compare.func <- function(hufkens.df,flux.met.df.daily){
+plot.compare.func <- function(hufkens.df,flux.met.df.daily,mode.nm = ''){
   par(mfrow=c(3,1),
       mar=c(5,5,1,1))
   
@@ -8,6 +8,7 @@ plot.compare.func <- function(hufkens.df,flux.met.df.daily){
   # points(LAI_sentinel~Date,data = flux.met.df.daily[flux.met.df.daily$Site == 'AU-Stp',],pch=16,col='green')
   points(LAI_modis~Date,data = flux.met.df.daily,pch=16,col='coral')
   legend('topleft',legend = c('MODIS','Model','Water'),lty='solid',col=c('coral','black','navy'),bty='n')
+  legend('topright',legend = mode.nm,bty='n')
   par(new=T)
   plot(wtfac_topsoil~Date,data = hufkens.df,col='navy',ann=F,axes=F,type='s')
   
@@ -80,12 +81,12 @@ points(swc~Date,data = ym.obs.df,pch=16,col='red')
 points(Rain_mm_Tot~Date,data = ym.obs.df,type='s',col='navy')
 
 #make plots######
-pdf('figures/model_evaluation_cover_off.pdf',width = 8,height = 8*.618*3)
-plot.compare.func(hufkens.df.stp,flux.met.df.daily[flux.met.df.daily$Site == 'AU-Stp',])
-plot.compare.func(hufkens.df.sgs,flux.met.df.daily[flux.met.df.daily$Site == 'AU-Stp',])
+pdf('figures/model_evaluation.pdf',width = 10,height = 8*.618*3)
+plot.compare.func(hufkens.df.stp,flux.met.df.daily[flux.met.df.daily$Site == 'AU-Stp',],mode.nm = 'CH-STP')
+plot.compare.func(hufkens.df.sgs,flux.met.df.daily[flux.met.df.daily$Site == 'AU-Stp',],mode.nm = 'SGS-STP')
 
-plot.compare.func(hufkens.df.hufken.yanco,flux.met.df.daily.yanco)
-plot.compare.func(sgs.df.yan,flux.met.df.daily.yanco)
+plot.compare.func(hufkens.df.hufken.yanco,flux.met.df.daily.yanco,mode.nm = 'CH-YAN')
+plot.compare.func(sgs.df.yan,flux.met.df.daily.yanco,mode.nm = 'SGS-YAN')
 
 dev.off()
 
