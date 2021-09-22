@@ -92,7 +92,7 @@ run.gday.site.func <- function(model.path,
   # this is the function that controls if growth depends on existing cover
   # 1=yes 0=no
   change_par_func(paste0(model.path,'par.cfg'),
-                  'use_cover',1)
+                  'use_cover',0)
   
   # the rainfall threshold for growth to start
   # set to <0 means growth can occur anytime
@@ -100,9 +100,12 @@ run.gday.site.func <- function(model.path,
                   'green_sw_frac',green.frac)
   # 
   change_par_func(paste0(model.path,'par.cfg'),
-                  'vcmax',80)
+                  'vcmax',30)
   change_par_func(paste0(model.path,'par.cfg'),
-                  'jmax',150)
+                  'jmax',30*1.6)
+  change_par_func(paste0(model.path,'par.cfg'),
+                  'ps_pathway','C3')
+
   # # # set initial pool size
   # # # shoot (c ton/ha) can be converted to LAI via sla (g/m2)
   # #lai shoot *sla /10 *biomass.c.fraction

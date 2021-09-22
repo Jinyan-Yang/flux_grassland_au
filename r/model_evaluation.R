@@ -53,7 +53,7 @@ sgs.df.yan$Date <- as.Date(sgs.df.yan$doy, origin = paste0(sgs.df.yan$year,'-1-1
 hufkens.df.hufken.yanco <- read.csv('model/yan_hufken/output.csv',skip=0,header = T)
 hufkens.df.hufken.yanco$Date <- as.Date(hufkens.df.hufken.yanco$doy, 
                                         origin = paste0(hufkens.df.hufken.yanco$year,'-1-1'))
-flux.met.df.daily.yanco <- read.csv('flux.yanco.daily.csv')
+flux.met.df.daily.yanco <- read.csv('data/flux.yanco.daily.csv')
 # plot.compare.func(hufkens.df.hufken.yanco,flux.met.df.daily.yanco)
 
 
@@ -92,3 +92,17 @@ dev.off()
 
 # 
 # check <- read.csv('model/ym_hufken/met.csv')
+modis.yanco <- read.csv('data/yanco_modis_check.csv')
+modis.yanco$Date <- as.Date(strptime(modis.yanco$system.time_start,'%B %d, %Y'))
+modis.yanco$lai.modis <- modis.yanco$Yanco*0.1
+# 
+flux.met.df.daily.yanco$Date <- as.Date(flux.met.df.daily.yanco$Date)
+# LAI
+plot(lai~Date,data = hufkens.df.hufken.yanco,type='l',lwd=3,ylim=c(0,3))
+# points(LAI_sentinel~Date,data = flux.met.df.daily[flux.met.df.daily$Site == 'AU-Stp',],pch=16,col='green')
+points(lai.modis~Date,data = modis.yanco,pch=16,col='coral')
+legend('topleft',legend = c('MODIS','Model','Water'),lty='solid',col=c('coral','black','navy'),bty='n')
+legend('topright',legend = 'YAN-CH',bty='n')
+par(new=T)
+plot(wtfac_topsoil~Date,data = hufkens.df.hufken.yanco,col='navy',ann=F,axes=F,type='s')
+

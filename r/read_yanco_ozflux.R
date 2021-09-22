@@ -198,5 +198,5 @@ lai.df <- lai.df[,c('Date','LAI_modis')]
 
 
 yanco.complete.df <- merge(yanco.flux.met.df,lai.df,all.x = T)
-write.csv(yanco.complete.df,'flux.yanco.daily.csv',row.names = F)
+write.csv(yanco.complete.df,'data/flux.yanco.daily.csv',row.names = F)
 

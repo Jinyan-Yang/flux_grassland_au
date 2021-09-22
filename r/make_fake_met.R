@@ -1,6 +1,6 @@
 library(lubridate)
 
-date.vec <- seq(as.Date('2010-1-1'),as.Date('2010-12-31'),by='day')
+date.vec <- seq(as.Date('2001-1-1'),as.Date('2006-12-31'),by='day')
 # make 30min data #####
 # but gday does not have a 30min photo model
 met.fake.df <- data.frame(year = year(date.vec),
@@ -30,7 +30,13 @@ met.fake.df <- data.frame(year = year(date.vec),
                           par_am = 2,
                           par_pm=2)
 
-met.fake.df$rain[10:20] <- 50.
+met.fake.df$rain[1:365] <- 3
+
+met.fake.df$rain[(365*2+10):(365*2+15)] <- 150.
+
+met.fake.df$rain[(365*3+10):(365*3+15)] <- 150.
+
+met.fake.df$rain[(365*4+10):(365*4+15)] <- 150.
 
 names(met.fake.df) <- c('#year','doy',
                         'tair','rain','tsoil',

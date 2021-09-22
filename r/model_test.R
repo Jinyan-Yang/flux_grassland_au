@@ -1,8 +1,13 @@
+source('r/functions_gday.R')
+# run tests
+# run.gday.site.func('model/test_original/' ,alocation.model ='SGS',q = 1,q_s = 0)
+run.gday.site.func('model/test_sgs/',alocation.model ='SGS',q = 1,q_s = 0)
+run.gday.site.func('model/test_hufken/',alocation.model ='HUFKEN',q = 1.5,q_s = 0.8)
 
 # plot test #######
 plot.gday.func <- function(hufkens.df,hypo = ''){
   par(mar=c(3,5,1,5))
-  plot(lai~Date,data = hufkens.df,type='l',lwd=3,ylim=c(0,1),
+  plot(lai~Date,data = hufkens.df,type='l',lwd=3,#ylim=c(0,3),
        xlab='',ylab='LAI',col='darkseagreen')
   legend('topright',legend = hypo,bty='n')
   # legend('topright',legend = c('LAI'),bty='n')
@@ -27,8 +32,8 @@ test.ori.df$Date <- as.Date(test.ori.df$doy,
                             origin = paste0(test.ori.df$year,'-1-1'))
 
 pdf('figures/model_test.pdf',width = 8,height = 8*.618*3)
-par(mfrow=c(3,1))
-plot.gday.func(test.ori.df,'Pulse')
+par(mfrow=c(2,1))
+# plot.gday.func(test.ori.df,'Pulse')
 plot.gday.func(test.sgs.df,'SGS')
 plot.gday.func(test.hufken.df,'CH')
 dev.off()
