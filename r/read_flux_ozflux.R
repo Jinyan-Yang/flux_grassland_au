@@ -1,5 +1,6 @@
 # read flux data
 library(ncdf4)
+library(doBy)
 # 
 # flux.fn <- 
 # read the nc files from ozflux####
@@ -8,17 +9,23 @@ get.flux.nc.func <- function(flux.fn){
   
   start.time <- (nc.file$dim$time$units)
   start.time <- gsub('days since ','',start.time)
-  
-  
+
   # nc.file$dim$latitude
   # nc.file$dim$longitude
-  
   flux.df <- data.frame(dateTime = as.POSIXlt( ncvar_get(nc.file,'time')*24*3600,
                                                origin = start.time,tz = 'GMT'),
                         nep =  ncvar_get(nc.file,'Fc'),
                         et = ncvar_get(nc.file,'Fe'),
-                        rain = ncvar_get(nc.file,'Precip'))
-  
+                        rain = ncvar_get(nc.file,'Precip'),
+                        # 
+                        vpd = ncvar_get(nc.file,'VPD'),
+                        Tair = ncvar_get(nc.file,'Ta'),
+                        Tsoil = ncvar_get(nc.file,'Ts'),
+                        RH = ncvar_get(nc.file,'RH'),
+                        sw_w_m2 = ncvar_get(nc.file,'Fsd'),
+                        lw_w_m2 = ncvar_get(nc.file,'Fld'),
+                        windSpeed = ncvar_get(nc.file,'u'),
+                        swc = ncvar_get(nc.file,'Sws'))
   return(flux.df)
 }
 
@@ -29,13 +36,22 @@ fulx.df.ls <- lapply(flx.vec,get.flux.nc.func)
 flux.df.yanco <- do.call(rbind,fulx.df.ls)
 flux.df.yanco$nep[flux.df.yanco$nep< -100] <- NA
 flux.df.yanco$et[flux.df.yanco$et< -100] <- NA
+flux.df.yanco$vpd[flux.df.yanco$vpd< 0] <- 0
+flux.df.yanco$windSpeed[flux.df.yanco$windSpeed< 0.05] <- 0.05
+
 flux.df.yanco$Date <- as.Date(flux.df.yanco$dateTime)
+
+saveRDS(flux.df.yanco,'cache/flux_OZflux_yanco.rds')
+
+
+
+# 
 library(doBy)
 flux.df.yanco.daily <- summaryBy(.~ Date, data = flux.df.yanco,
                                FUN=mean,na.rm=T,keep.names =T)
 
-# read the file from anna###
 
+# read the file from anna###
 nc.anna.nm <- 'data/AU-Ync_2011-2017_OzFlux_Flux.nc'
 nc.anna.nm.met <- 'data/AU-Ync_2011-2017_OzFlux_met.nc'
 nc.anna <- nc_open(nc.anna.nm)
@@ -82,6 +98,9 @@ rain.df$Date <- strptime(paste0(rain.df$Year,'-',
 rain.df$Date <- as.Date(rain.df$Date)
 rain.df <- rain.df[rain.df$Year>2013 &
                      rain.df$Year<2018,]
+
+
+
 pdf('compare_yanco.pdf',width = 8,height = 8*.618*3)
 # 
 par(mfrow=c(3,1),
