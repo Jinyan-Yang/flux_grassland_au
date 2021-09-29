@@ -3,6 +3,7 @@ source('r/functions_gday.R')
 # run.gday.site.func('model/test_original/' ,alocation.model ='SGS',q = 1,q_s = 0)
 run.gday.site.func('model/test_sgs/',alocation.model ='SGS',q = 1,q_s = 0)
 run.gday.site.func('model/test_hufken/',alocation.model ='HUFKEN',q = 1.5,q_s = 0.8)
+run.gday.site.func('model/test_original/',alocation.model ='GRASSES',q = 0,q_s = 0,af = 0.9999)
 
 # plot test #######
 plot.gday.func <- function(hufkens.df,hypo = ''){
@@ -36,4 +37,5 @@ par(mfrow=c(2,1))
 # plot.gday.func(test.ori.df,'Pulse')
 plot.gday.func(test.sgs.df,'SGS')
 plot.gday.func(test.hufken.df,'CH')
+plot.gday.func(test.ori.df,'Original')
 dev.off()
