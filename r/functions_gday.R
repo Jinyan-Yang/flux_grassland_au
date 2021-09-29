@@ -117,7 +117,7 @@ run.gday.site.func <- function(model.path,
   change_par_func(paste0(model.path,'par.cfg'),
                   'nsc',0.5)
   change_par_func(paste0(model.path,'par.cfg'),
-                  'sla',10.0)
+                  'sla',20.0)#AK has 50 g m-2 for TT; model need m2 kg
   # add soil water conditions
   soil.depth <- 300 #mm
   root.depth <- 700
