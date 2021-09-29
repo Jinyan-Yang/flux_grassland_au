@@ -119,9 +119,9 @@ ros.met.df <- ros.met.df[,c('year','doy',
 # apply filer to avoid gday crash
 ros.met.df$vpd_am[ros.met.df$vpd_am<0.05] <- 0.051
 ros.met.df$vpd_pm[ros.met.df$vpd_pm<0.05] <- 0.051
-ros.met.df$wind[ros.met.df$wind<=0] <- 0.01
-ros.met.df$wind_am[ros.met.df$wind_am<=0] <- 0.01
-ros.met.df$wind_pm[ros.met.df$wind_pm<=0] <- 0.01
+ros.met.df$wind[ros.met.df$wind<=0] <- 0.051
+ros.met.df$wind_am[ros.met.df$wind_am<=0] <- 0.051
+ros.met.df$wind_pm[ros.met.df$wind_pm<=0] <- 0.051
 # 
 names(ros.met.df) <- c('#year','doy',
                         'tair','rain','tsoil',
@@ -132,5 +132,5 @@ names(ros.met.df) <- c('#year','doy',
                         'par_am','par_pm')
 
 # write to csv
-write.csv(ros.met.df,'met.ros.daily.csv',row.names = F,quote=F)
-
+write.csv(ros.met.df,'model/ym_hufken/met.csv',row.names = F,quote=F)
+write.csv(ros.met.df,'model/ym_sgs/met.csv',row.names = F,quote=F)
