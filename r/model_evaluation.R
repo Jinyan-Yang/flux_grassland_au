@@ -68,7 +68,7 @@ sgs.df.ym$Date <- as.Date(sgs.df.ym$doy,
                           origin = paste0(sgs.df.ym$year,'-1-1'))
 sgs.df.ym <- sgs.df.ym[sgs.df.ym$year>2018,]
 # 
-ym.obs.df <- readRDS('d:/repo/PhenoMods/tmp/pred.smv13.2qchain.ym.Control.Ambient.rds')
+ym.obs.df <- readRDS('d:/repo/PhenoMods/tmp/pred.smsmv13.2q.chain.ym.Control.Ambient.rds')
 
 # # # 
 # plot(lai~Date,data = hufkens.df.hufken.ym,ylim=c(0,1))

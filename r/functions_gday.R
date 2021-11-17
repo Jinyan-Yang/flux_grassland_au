@@ -67,7 +67,10 @@ run.gday.site.func <- function(model.path,
                                q_s =1,
                                green.frac = -1,
                                af = 0.025,
-                               decay.rate = 0.03*365
+                               decay.rate = 0.03*365,
+                               ar.max = 0.0001,
+                               ar.min = 0
+                               
 ){
   
   # test Hufkens####
@@ -79,7 +82,9 @@ run.gday.site.func <- function(model.path,
   change_par_func(paste0(model.path,'par.cfg'),
                   'c_alloc_fmax',af)
   change_par_func(paste0(model.path,'par.cfg'),
-                  'c_alloc_rmax',0.0001)
+                  'c_alloc_rmax',ar.max)
+  change_par_func(paste0(model.path,'par.cfg'),
+                  'c_alloc_rmin',ar.min)
   change_par_func(paste0(model.path,'par.cfg'),
                   'fdecay',decay.rate)
   change_par_func(paste0(model.path,'par.cfg'),
@@ -92,7 +97,7 @@ run.gday.site.func <- function(model.path,
   # this is the function that controls if growth depends on existing cover
   # 1=yes 0=no
   change_par_func(paste0(model.path,'par.cfg'),
-                  'use_cover',0)
+                  'use_cover',1)
   
   # the rainfall threshold for growth to start
   # set to <0 means growth can occur anytime
@@ -117,7 +122,7 @@ run.gday.site.func <- function(model.path,
   change_par_func(paste0(model.path,'par.cfg'),
                   'nsc',0.5)
   change_par_func(paste0(model.path,'par.cfg'),
-                  'sla',20.0)#AK has 50 g m-2 for TT; model need m2 kg
+                  'sla',30.0)#AK has 50 g m-2 for TT; model need m2 kg
   # add soil water conditions
   soil.depth <- 300 #mm
   root.depth <- 700

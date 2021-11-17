@@ -3,7 +3,7 @@ source('r/functions_gday.R')
 # run.gday.site.func('model/test_original/' ,alocation.model ='SGS',q = 1,q_s = 0)
 run.gday.site.func('model/test_sgs/',alocation.model ='SGS',q = 1,q_s = 0)
 run.gday.site.func('model/test_hufken/',alocation.model ='HUFKEN',q = 1.5,q_s = 0.8)
-run.gday.site.func('model/test_original/',alocation.model ='GRASSES',q = 0,q_s = 0,af = 0.9999)
+run.gday.site.func('model/test_original/',alocation.model ='GRASSES',q = 0,q_s = 0,af = 0.9999,decay.rate = 0.03*365)
 
 # plot test #######
 plot.gday.func <- function(hufkens.df,hypo = ''){
