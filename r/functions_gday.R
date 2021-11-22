@@ -69,7 +69,8 @@ run.gday.site.func <- function(model.path,
                                af = 0.025,
                                decay.rate = 0.03*365,
                                ar.max = 0.0001,
-                               ar.min = 0
+                               ar.min = 0,
+                               cover.impact = 1
                                
 ){
   
@@ -97,7 +98,7 @@ run.gday.site.func <- function(model.path,
   # this is the function that controls if growth depends on existing cover
   # 1=yes 0=no
   change_par_func(paste0(model.path,'par.cfg'),
-                  'use_cover',1)
+                  'use_cover',cover.impact)
   
   # the rainfall threshold for growth to start
   # set to <0 means growth can occur anytime
