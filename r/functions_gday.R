@@ -4,11 +4,12 @@ change_par_func <- function(file.name,par.name,par.value){
   # read the file
   par.file <- readLines(file.name)
   # find line with the param
-  par.find <- paste0(par.name,' =')
-  nl_start <- grep(par.find, par.file, fixed=T)
+  par.find <- paste0('^',par.name,' =')
+  par.nm <- paste0(par.name,' =')
+  nl_start <- grep(par.find, par.file, fixed=F)
   
   # give the param the new value
-  new.line <- paste0(par.find,' ',par.value)
+  new.line <- paste0(par.nm,' ',par.value)
   
   # see if only one param was found
   if(length(nl_start)==1){
@@ -51,7 +52,7 @@ run_gday_func <- function(met.folder,exe.name = 'PTP.exe',gday.exe.path='model/g
   on.exit(setwd(currunt.wd))
   
    #get exe from a comon repo 
-  exe.path <- paste0(met.folder,exe.name)
+  exe.path <- file.path(met.folder,exe.name)
   file.copy(gday.exe.path,exe.path,overwrite =T)
   # run the model in the environment
   target.wd <- setwd(met.folder)
@@ -70,7 +71,11 @@ run.gday.site.func <- function(model.path,
                                decay.rate = 0.03*365,
                                ar.max = 0.0001,
                                ar.min = 0,
-                               cover.impact = 1
+                               cover.impact = 1,
+                               do.graze = 'false',
+                               nsc.initial = 0.5,
+                               vcmax.in = 30,
+                               jmax.in=48
                                
 ){
   
@@ -111,6 +116,14 @@ run.gday.site.func <- function(model.path,
                   'jmax',30*1.6)
   change_par_func(paste0(model.path,'par.cfg'),
                   'ps_pathway','C3')
+  change_par_func(paste0(model.path,'par.cfg'),
+                  'g1','4.2')
+  
+  # control
+  change_par_func(paste0(model.path,'par.cfg'),
+                  'grazing',do.graze)
+  
+  
 
   # # # set initial pool size
   # # # shoot (c ton/ha) can be converted to LAI via sla (g/m2)
@@ -121,12 +134,12 @@ run.gday.site.func <- function(model.path,
   # # either this or shoot need to be above 0 or there will never be any plant
   # #
   change_par_func(paste0(model.path,'par.cfg'),
-                  'nsc',0.5)
+                  'nsc',nsc.initial)
   change_par_func(paste0(model.path,'par.cfg'),
                   'sla',30.0)#AK has 50 g m-2 for TT; model need m2 kg
   # add soil water conditions
-  soil.depth <- 300 #mm
-  root.depth <- 700
+  soil.depth <- 700 #mm
+  root.depth <- 1000
   fc <- 0.3
   wp <- 0.05
   change_par_func(paste0(model.path,'par.cfg'),
