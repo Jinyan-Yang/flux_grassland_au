@@ -1,4 +1,3 @@
-
 ##############################################################################
 # list of varibles needed in gday#############################################
 # https://github.com/mdekauwe/GDAY############################################
@@ -30,8 +29,8 @@ download.ros.met.func(startDate = '2019-1-1',
                       met15.nm = 'data/ros15.rds')
 # read ym 5min data####
 ros.met.df <- put.met2gday.format.func(met.05.nm = 'data/ros05.rds',
-                         met.15.nm = 'data/ros15.rds')
+                                       met.15.nm = 'data/ros15.rds')
 
 # write to csv
-write.csv(ros.met.df,'model/ym_hufken/met.csv',row.names = F,quote=F)
-write.csv(ros.met.df,'model/ym_sgs/met.csv',row.names = F,quote=F)
+write.csv(ros.met.df,'model/ym_hufkens/met.csv',row.names = F,quote=F)
+# write.csv(ros.met.df,'model/ym_sgs/met.csv',row.names = F,quote=F)
