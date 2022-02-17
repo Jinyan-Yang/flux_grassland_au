@@ -115,7 +115,6 @@ ros.met.df <- ros.met.df[,c('year','doy',
                               'wind','pres','wind_am','wind_pm',
                               'par_am','par_pm')]
 
-
 # apply filer to avoid gday crash
 ros.met.df$vpd_am[ros.met.df$vpd_am<0.05] <- 0.051
 ros.met.df$vpd_pm[ros.met.df$vpd_pm<0.05] <- 0.051
