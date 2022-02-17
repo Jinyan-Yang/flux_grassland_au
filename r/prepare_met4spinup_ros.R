@@ -1,34 +1,12 @@
+# prepare functions
+source('r/functions.R')
+# download met data
+download.ros.met.func(startDate = '2015-1-1',
+                      endDate = '2018-12-31')
 
-##############################################################################
-# list of varibles needed in gday#############################################
-# https://github.com/mdekauwe/GDAY############################################
-##############################################################################
-
-# Variable	Description	Units
-# year		
-# doy	day of year	[1-365/6]
-# hod	hour of day	[0-47]
-# rain	rainfall	mm 30 min-1
-# par	photosynthetically active radiation	umol m-2 s-1
-# tair	air temperature	deg C
-# tsoil	soil temperature	deg C
-# vpd	vapour pressure deficit	kPa
-# co2	CO2 concentration	ppm
-# ndep	nitrogen deposition	t ha-1 30 min-1
-# nfix	biological nitrogen fixation	t ha-1 30 min-1
-# wind	wind speed	m s-1
-# press	atmospheric pressure	kPa
-
-# prepare
-# funtion to calculate vpd frim Tair and rh
-getVPD <- function(RH,TAIR){
-  
-  VPD <- (1-RH)*0.61375*exp(17.502*TAIR/(240.97+TAIR))
-  
-  return(VPD)
-}
+# put met into gday format######
 # read ym 5min data
-ym.05min.df <- readRDS('data/ros05.rds')
+ym.05min.df <- readRDS('data/ros05_spinup.rds')
 
 library(lubridate)
 mumol_j = 4.56
@@ -91,7 +69,7 @@ tmp.1 <- merge(am.pm.format.df,daily.df.format)
 tmp.2 <- merge(tmp.1,daytime.df)
 
 # read rainfall
-rain.ym.df <- readRDS('data/ros15.rds')
+rain.ym.df <- readRDS('data/ros15_spinup.rds')
 ros.rain.day.df <- doBy::summaryBy(Rain_mm_Tot~Date,data = rain.ym.df,
                                    FUN=sum,keep.names = T,na.rm=T)
 names(ros.rain.day.df) <- c('Date','rain')
@@ -108,12 +86,13 @@ ros.met.df$year <- year(ros.met.df$Date)
 ros.met.df$doy <- yday(ros.met.df$Date)
 # order the pars so that gday can read correctly
 ros.met.df <- ros.met.df[,c('year','doy',
-                              'tair','rain','tsoil',
-                              'tam','tpm','tmin','tmax','tday',
-                              'vpd_am','vpd_pm',
-                              'co2','ndep','nfix',
-                              'wind','pres','wind_am','wind_pm',
-                              'par_am','par_pm')]
+                            'tair','rain','tsoil',
+                            'tam','tpm','tmin','tmax','tday',
+                            'vpd_am','vpd_pm',
+                            'co2','ndep','nfix',
+                            'wind','pres','wind_am','wind_pm',
+                            'par_am','par_pm')]
+
 
 # apply filer to avoid gday crash
 ros.met.df$vpd_am[ros.met.df$vpd_am<0.05] <- 0.051
@@ -123,24 +102,13 @@ ros.met.df$wind_am[ros.met.df$wind_am<=0] <- 0.051
 ros.met.df$wind_pm[ros.met.df$wind_pm<=0] <- 0.051
 # 
 names(ros.met.df) <- c('#year','doy',
-                        'tair','rain','tsoil',
-                        'tam','tpm','tmin','tmax','tday',
-                        'vpd_am','vpd_pm',
-                        'co2','ndep','nfix',
-                        'wind','pres','wind_am','wind_pm',
-                        'par_am','par_pm')
-=======
-source('r/functions.R')
-
-# ####
-download.ros.met.func(startDate = '2019-1-1',
-                      endDate = '2020-12-31',
-                      met05.nm = 'data/ros05.rds',
-                      met15.nm = 'data/ros15.rds')
-# read ym 5min data####
-ros.met.df <- put.met2gday.format.func(met.05.nm = 'data/ros05.rds',
-                         met.15.nm = 'data/ros15.rds')
+                       'tair','rain','tsoil',
+                       'tam','tpm','tmin','tmax','tday',
+                       'vpd_am','vpd_pm',
+                       'co2','ndep','nfix',
+                       'wind','pres','wind_am','wind_pm',
+                       'par_am','par_pm')
 
 # write to csv
-write.csv(ros.met.df,'model/ym_hufken/met.csv',row.names = F,quote=F)
-write.csv(ros.met.df,'model/ym_sgs/met.csv',row.names = F,quote=F)
+write.csv(ros.met.df,'model/ym_spinup/met.csv',row.names = F,quote=F)
+# write.csv(ros.met.df,'model/ym_sgs/met.csv',row.names = F,quote=F)

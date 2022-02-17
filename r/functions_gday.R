@@ -37,7 +37,13 @@ change_par_func <- function(file.name,par.name,par.value){
   }
   
 }
-
+# 
+update.par.func <- function(par.fn,par.ls){
+  for (i in seq_along(par.ls)) {
+    change_par_func(paste0(model.path,'par.cfg'),
+                    'alloc_model',alocation.model)
+  }
+}
 # change_par_func('par.cfg','sla',11)
 
 
