@@ -117,9 +117,9 @@ run.gday.site.func <- function(model.path,
                   'green_sw_frac',green.frac)
   # 
   change_par_func(paste0(model.path,'par.cfg'),
-                  'vcmax',30)
+                  'vcmax',vcmax.in)
   change_par_func(paste0(model.path,'par.cfg'),
-                  'jmax',30*1.6)
+                  'jmax',jmax.in)
   change_par_func(paste0(model.path,'par.cfg'),
                   'ps_pathway','C3')
   change_par_func(paste0(model.path,'par.cfg'),
