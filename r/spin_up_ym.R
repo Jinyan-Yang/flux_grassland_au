@@ -63,38 +63,41 @@ spinup.ym.func <- function(folder.nm = 'model/ym_spinup/',met.nm = 'model/ym_spi
   #                    decay.rate = 0.03*365,
   #                    cover.impact = 0)
   
-  # # # # # set initial pool size#################################
-  # # # # # shoot (c ton/ha) can be converted to LAI via sla (g/m2)
-  # # # # #lai shoot *sla /10 *biomass.c.fraction
-  # change_par_func(paste0(folder.nm,'par.cfg'),
-  #                 'shoot','0.001')
-  # change_par_func(paste0(folder.nm,'par.cfg'),
-  #                 'shootn','0.00004')
-  # 
-  # change_par_func(paste0(folder.nm,'par.cfg'),
-  #                 'nsc',0.0)
-  # change_par_func(paste0(folder.nm,'par.cfg'),
-  #                 'stem',0.0)
-  # change_par_func(paste0(folder.nm,'par.cfg'),
-  #                 'branch',0.0)
-  # change_par_func(paste0(folder.nm,'par.cfg'),
-  #                 'croot',0.0)
-  # change_par_func(paste0(folder.nm,'par.cfg'),
-  #                 'crootn',0.0)
-  # change_par_func(paste0(folder.nm,'par.cfg'),
-  #                 'root','1.0')
-  # change_par_func(paste0(folder.nm,'par.cfg'),
-  #                 'rootn','0.00004')
-  # change_par_func(paste0(folder.nm,'par.cfg'),
-  #                 'inorgn','0.00004')
-  # change_par_func(paste0(folder.nm,'par.cfg'),
-  #                 'prev_sma','1.0')
-  # 
-  # change_par_func(paste0(folder.nm,'par.cfg'),
-  #                 'deciduous_model','true')
-  # 
-  # change_par_func(paste0(folder.nm,'par.cfg'),
-  #                 'grazing',0)
+  # # # # set initial pool size#################################
+  # # # # shoot (c ton/ha) can be converted to LAI via sla (g/m2)
+  # # # #lai shoot *sla /10 *biomass.c.fraction
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'shoot','0.001')
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'shootn','0.00004')
+
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'nsc',0.2)
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'stem',0.0)
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'branch',0.0)
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'croot',0.0)
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'crootn',0.0)
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'root','1.0')
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'rootn','0.00004')
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'inorgn','0.00004')
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'prev_sma','1.0')
+
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'deciduous_model','false')
+
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'grazing',0)
+  
+  change_par_func(paste0(folder.nm,'par.cfg'),
+                  'ncycle','false')
   
   # ######
   # run.gday.climGrass.func(model.path = folder.nm,do.graze = 0)
