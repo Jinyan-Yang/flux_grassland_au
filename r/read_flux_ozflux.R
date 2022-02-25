@@ -14,7 +14,7 @@ get.flux.nc.func <- function(flux.fn){
   # nc.file$dim$longitude
   flux.df <- data.frame(dateTime = as.POSIXlt( ncvar_get(nc.file,'time')*24*3600,
                                                origin = start.time,tz = 'GMT'),
-                        nep =  ncvar_get(nc.file,'Fc'),
+                        nep =  ncvar_get(nc.file,'Fco2'),
                         et = ncvar_get(nc.file,'Fe'),
                         rain = ncvar_get(nc.file,'Precip'),
                         # 
@@ -24,12 +24,12 @@ get.flux.nc.func <- function(flux.fn){
                         RH = ncvar_get(nc.file,'RH'),
                         sw_w_m2 = ncvar_get(nc.file,'Fsd'),
                         lw_w_m2 = ncvar_get(nc.file,'Fld'),
-                        windSpeed = ncvar_get(nc.file,'u'),
+                        windSpeed = ncvar_get(nc.file,'Ws_2m'),
                         swc = ncvar_get(nc.file,'Sws'))
   return(flux.df)
 }
 
-flx.vec <- sprintf('data/Yanco_%s_L3.nc',2014:2017)
+flx.vec <- sprintf('data/yanco/Yanco_%s_L3.nc',2014:2020)
 
 fulx.df.ls <- lapply(flx.vec,get.flux.nc.func)
 

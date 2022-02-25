@@ -52,9 +52,9 @@ met.fn.vec <- list.files('data/',pattern = '_Met',full.names = T)
 fn.ls <- list()
 fn.ls[[1]] <- data.frame(flux.nm = flux.fn.vec[1],
                          met.nm = met.fn.vec[1])
-fn.ls[[2]] <- data.frame(flux.nm = flux.fn.vec[2],
-                         met.nm = met.fn.vec[2])
-# read files
+# fn.ls[[2]] <- data.frame(flux.nm = flux.fn.vec[2],
+#                          met.nm = met.fn.vec[2])
+# # read files
 flux.met.ls <- lapply(fn.ls,get.nc.func)
 flux.met.df <- do.call(rbind,flux.met.ls)
 flux.met.df$Date <- as.Date(flux.met.df$DateTime)
@@ -72,7 +72,7 @@ modis.google.df <- rbind(modis.lai.stp,modis.lai.ync)
 modis.google.df$lai_modis_google <- modis.google.df$lai_modis_google*0.1
 # 
 flux.met.df.google.lai <- merge(flux.met.df,modis.google.df,by=c('Date','Site'),all.x=T)
-saveRDS(flux.met.df.google.lai,'cache/flux_stp_ync_processed.rds')
+saveRDS(flux.met.df.google.lai,'cache/flux_stp_processed.rds')
 
 # get daily values
 library(doBy)

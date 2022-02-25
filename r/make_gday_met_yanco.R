@@ -63,7 +63,7 @@ am.pm.format.df <- merge(am.df,pm.df)
 daily.df <- summaryBy(rain + Tair + windSpeed~Date ,data = flux.met.df,
                       FUN = c(mean,max,min),na.rm=T)
 daily.df$tair <- daily.df$Tair.mean 
-daily.df$rain <- daily.df$rain.mean *12 #conver mm/30min to mm/d
+daily.df$rain <- daily.df$rain.mean * 48 #convert mm/30min to mm/d
 daily.df$tmax <- daily.df$Tair.max
 daily.df$tmin <- daily.df$Tair.min
 
@@ -105,6 +105,14 @@ met.gday.df$vpd_pm[met.gday.df$vpd_pm<0.05] <- 0.051
 met.gday.df$wind[met.gday.df$wind<=0] <- 0.05
 met.gday.df$wind_am[met.gday.df$wind_am<=0] <- 0.05
 met.gday.df$wind_pm[met.gday.df$wind_pm<=0] <- 0.05
+met.gday.df$tair[(met.gday.df$tair)< -5] <- NA
+met.gday.df$tsoil[(met.gday.df$tsoil)< -5] <- NA
+met.gday.df$tam[(met.gday.df$tam)< -5] <- NA
+met.gday.df$tpm[(met.gday.df$tpm)< -5] <- NA
+met.gday.df$tmin[(met.gday.df$tmin)< -5] <- NA
+met.gday.df$tmax[(met.gday.df$tmax)< -5] <- NA
+met.gday.df$par_am[(met.gday.df$par_am)< 0] <- NA
+met.gday.df$par_pm[(met.gday.df$par_pm)< 0] <- NA
 # na.fill
 library(zoo)
 met.gday.df$vpd_am <- na.fill(met.gday.df$vpd_am,'extend')
@@ -115,6 +123,7 @@ met.gday.df$wind_pm<- na.fill(met.gday.df$wind_pm,'extend')
 
 met.gday.df$tair<- na.fill(met.gday.df$tair,'extend')
 met.gday.df$rain[is.na(met.gday.df$rain)] <- 0
+met.gday.df$rain[(met.gday.df$rain)<0] <- 0
 met.gday.df$tsoil<- na.fill(met.gday.df$tsoil,'extend')
 met.gday.df$tam<- na.fill(met.gday.df$tam,'extend')
 met.gday.df$tpm<- na.fill(met.gday.df$tpm,'extend')
@@ -122,8 +131,8 @@ met.gday.df$tpm<- na.fill(met.gday.df$tpm,'extend')
 met.gday.df$tmin<- na.fill(met.gday.df$tmin,'extend')
 met.gday.df$tmax<- na.fill(met.gday.df$tmax,'extend')
 met.gday.df$tday<- na.fill(met.gday.df$tday,'extend')
-met.gday.df$tpm<- na.fill(met.gday.df$tpm,'extend')
-met.gday.df$tpm<- na.fill(met.gday.df$tpm,'extend')
+met.gday.df$par_am<- na.fill(met.gday.df$par_am,'extend')
+met.gday.df$par_pm<- na.fill(met.gday.df$par_pm,'extend')
 
 # 
 names(met.gday.df) <- c('#year','doy',
@@ -138,6 +147,6 @@ names(met.gday.df) <- c('#year','doy',
 
 
 write.csv(met.gday.df,'model/yan_hufken/met.csv',row.names = F,quote=F)
-write.csv(met.gday.df,'model/yan_sgs/met.csv',row.names = F,quote=F)
-write.csv(met.gday.df,'data/met.yanco.daily.csv',row.names = F,quote=F)
+write.csv(met.gday.df,'model/yan_grass/met.csv',row.names = F,quote=F)
+# write.csv(met.gday.df,'data/met.yanco.daily.csv',row.names = F,quote=F)
 # write.csv(met.fake.df,'model/test_original/met.csv',row.names = F,quote=F)

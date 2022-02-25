@@ -32,5 +32,6 @@ ros.met.df <- put.met2gday.format.func(met.05.nm = 'data/ros05.rds',
                                        met.15.nm = 'data/ros15.rds')
 
 # write to csv
-write.csv(ros.met.df,'model/flux_hufkens/met.csv',row.names = F,quote=F)
+write.csv(ros.met.df,'model/flux_hufken/met.csv',row.names = F,quote=F)
+write.csv(ros.met.df,'model/flux_grass/met.csv',row.names = F,quote=F)
 # write.csv(ros.met.df,'model/ym_sgs/met.csv',row.names = F,quote=F)

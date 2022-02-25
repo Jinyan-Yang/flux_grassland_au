@@ -22,7 +22,7 @@ library(lubridate)
 mumol_j = 4.56
 par_fraction <- 0.368
 # 
-flux.met.df <- readRDS('cache/flux_stp_ync_processed.rds')
+flux.met.df <- readRDS('cache/flux_stp_processed.rds')
 flux.met.df <- flux.met.df[flux.met.df$Site == 'AU-Stp',]
 # make time of day
 flux.met.df$hour <- hour(flux.met.df$DateTime)
@@ -35,28 +35,28 @@ flux.met.df$am.pm <- NA
 flux.met.df$am.pm[flux.met.df$hour %in% 6:11] <- 'am'
 flux.met.df$am.pm[flux.met.df$hour %in% 12:17] <- 'pm'
 
-# make 30min data #####
-# but gday does not have a 30min photo model
-met.fake.df <- data.frame(year = year(flux.met.df$Date),
-                          doy = yday(flux.met.df$Date),
-                          hod = flux.met.df$hour.day,
-                          
-                          rain = flux.met.df$rain_kg_m2_s,
-                          par = (flux.met.df$sw_w_m2) * mumol_j * par_fraction,
-                          tair = flux.met.df$Tair/10,
-                          tsoil = 20,
-                          vpd = flux.met.df$vpd,
-                          
-                          co2 = 400,
-                          ndep = 0,
-                          nfix = 0,
-                          wind = flux.met.df$windSpeed,
-                          press = 101)
-# apply filer to avoid gday crash
-met.fake.df$vpd[met.fake.df$vpd<0.05] <- 0.051
-met.fake.df$wind[met.fake.df$wind<=0] <- 0.01
-
-write.csv(met.fake.df,'met.stp.csv',col.names = NA,row.names = F)
+# # make 30min data #####
+# # but gday does not have a 30min photo model
+# met.fake.df <- data.frame(year = year(flux.met.df$Date),
+#                           doy = yday(flux.met.df$Date),
+#                           hod = flux.met.df$hour.day,
+#                           
+#                           rain = flux.met.df$rain_kg_m2_s,
+#                           par = (flux.met.df$sw_w_m2) * mumol_j * par_fraction,
+#                           tair = flux.met.df$Tair/10,
+#                           tsoil = 20,
+#                           vpd = flux.met.df$vpd,
+#                           
+#                           co2 = 400,
+#                           ndep = 0,
+#                           nfix = 0,
+#                           wind = flux.met.df$windSpeed,
+#                           press = 101)
+# # apply filer to avoid gday crash
+# met.fake.df$vpd[met.fake.df$vpd<0.05] <- 0.051
+# met.fake.df$wind[met.fake.df$wind<=0] <- 0.01
+# 
+# # write.csv(met.fake.df,'met.stp.csv',col.names = NA,row.names = F)
 
 
 # make daily met####
@@ -138,4 +138,5 @@ names(met.gday.df) <- c('#year','doy',
                         'par_am','par_pm')
 
 # write to csv
-write.csv(met.gday.df,'met.stp.daily.csv',row.names = F,quote=F)
+write.csv(met.gday.df,'model/stp_grass/met.csv',row.names = F,quote=F)
+write.csv(met.gday.df,'model/stp_hufken/met.csv',row.names = F,quote=F)

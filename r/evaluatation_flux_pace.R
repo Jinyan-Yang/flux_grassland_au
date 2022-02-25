@@ -1,0 +1,108 @@
+# read all output####
+folder.vec <- list.files('model/')
+folder.vec <- folder.vec[!folder.vec %in% c("test", "gday_exe")]
+folder.vec <- folder.vec[!folder.vec %in% folder.vec[grep('spinup',folder.vec)]]
+# 
+out.ls <- list()
+for (fld.i in seq_along(folder.vec)) {
+  tmp.df <- read.csv(file.path('model',folder.vec[fld.i],'output.csv'),skip=0,header = T)
+  tmp.df$Date <- as.Date(tmp.df$doy, origin = paste0(tmp.df$year,'-1-1'))
+  out.ls[[fld.i]] <- tmp.df
+}
+names(out.ls) <- folder.vec
+
+# read all cover data ####
+pace.df <- readRDS('data/gcc.met.pace.df.rds')
+ym.df <- readRDS('data/ym.con.gcc.df.rds')
+flux.df <- readRDS('data/flux.con.gcc.df.rds')
+yanco.df <- readRDS('cache/flux_OZflux_yanco.rds')
+yanco.modis.lai.df <- read.csv('data/modis_lai_stp_ync.csv')
+yanco.modis.lai.df$lai.yanco <- yanco.modis.lai.df$Yanco / 10
+yanco.modis.lai.df$Date <- as.Date(yanco.modis.lai.df$system.time_start,'%B %d, %Y')
+stp.df <- readRDS('cache/flux_stp_processed.rds')
+
+# plot lai
+pdf('figures/model_lai_evaluation.pdf',width = 8,height = 8*.618)
+
+# 
+species.vec <- c('Bis','Dig','Luc','Fes','Rye','Kan','Rho','Pha')
+# 
+par(mar = c(5,5,1,5))
+for (plot.i in seq_along(names(out.ls))) {
+  
+  site.nm <- substr(names(out.ls)[plot.i],1,3)
+  
+  if(site.nm == 'flu')site.nm = 'flux'
+  if(site.nm == 'ym_')site.nm = 'ym'
+  
+  if(site.nm %in% species.vec){
+    pace.df.sub <- pace.df[pace.df$Species == site.nm & 
+                             pace.df$Precipitation == 'Control' &
+                             pace.df$Temperature =='Ambient',]
+    
+    plot(GCC~Date,data = pace.df.sub,type='p',pch=16,col='grey',
+         xlim=range(out.ls[[plot.i]]$Date),
+         xlab='',ylab=' ',ann=F,axes=F)
+    axis(4,at = seq(0.3,0.45,by=0.05),labels = seq(0.3,0.45,by=0.05))
+    mtext('GCC',side = 4,line = 3)
+  }else if(site.nm == 'ym'){
+    pace.df.sub <- ym.df
+    
+    plot(GCC~Date,data = pace.df.sub,type='p',pch=16,col='grey',
+         xlim=range(out.ls[[plot.i]]$Date),
+         xlab='',ylab=' ',ann=F,axes=F)
+    axis(4,at = seq(0.3,0.45,by=0.05),labels = seq(0.3,0.45,by=0.05))
+    mtext('GCC',side = 4,line = 3)
+  }else if(site.nm == 'flux'){
+    pace.df.sub <- flux.df
+    
+    plot(GCC~Date,data = pace.df.sub,type='p',pch=16,col='grey',
+         xlim=range(out.ls[[plot.i]]$Date),
+         xlab='',ylab=' ',ann=F,axes=F)
+    axis(4,at = seq(0.3,0.45,by=0.05),labels = seq(0.3,0.45,by=0.05))
+    mtext('GCC',side = 4,line = 3)
+  }else if(site.nm == 'stp'){
+    
+    pace.df.sub <- stp.df
+    plot(LAI_modis~Date,data = pace.df.sub,type='p',pch=16,col='grey',
+         xlim=range(out.ls[[plot.i]]$Date),
+         xlab='',ylab=' ',ann=F,axes=F)
+    axis(4,at = seq(0,2,by=0.5),labels = seq(0,2,by=0.5))
+    mtext('LAI_MODIS',side = 4,line = 3)
+  }else if(site.nm == 'yan'){
+    pace.df.sub <- yanco.modis.lai.df
+    plot(lai.yanco~Date,data = pace.df.sub,type='p',pch=16,col='grey',
+         xlim=range(out.ls[[plot.i]]$Date),
+         xlab='',ylab=' ',ann=F,axes=F)
+    axis(4,at = seq(0,2,by=0.5),labels = seq(0,2,by=0.5))
+    mtext('LAI_MODIS',side = 4,line = 3)
+  }else{
+    stop('check site name')
+  }
+
+  
+
+  par(new=T)
+  plot(lai~Date,data = out.ls[[plot.i]],type='l',lwd=3,col='darkseagreen',
+       xlim=range(out.ls[[plot.i]]$Date),
+       xlab='',ylab='LAI')
+  legend('topleft',legend = names(out.ls)[plot.i],bty='n')
+
+  
+}
+dev.off()
+
+# plot(lai~Date,data = out.ls[['Kan_hufken']],type='l',lwd=3)
+# plot(lai~Date,data = out.ls[['ym_grass']],type='l',lwd=3)
+# plot(lai~Date,data = out.ls[['ym_hufken']],type='l',lwd=3)
+plot(wtfac_topsoil~Date,data = out.ls[['ym_hufken']],type='l',lwd=3)
+plot(wtfac_topsoil~Date,data = out.ls[['Luc_hufken']],type='l',lwd=3)
+
+# 
+# plot(lai~Date,data = out.ls[['stp_hufken']],type='l',lwd=3)
+# plot(lai~Date,data = out.ls[['stp_grass']],type='l',lwd=3)
+# 
+# 
+# plot(lai~Date,data = out.ls[['yan_grass']],type='l',lwd=3)
+# plot(wtfac_topsoil~Date,data = out.ls[['yan_grass']],type='l',lwd=3)
+# plot(lai~Date,data = out.ls[['yan_hufken']],type='l',lwd=3)

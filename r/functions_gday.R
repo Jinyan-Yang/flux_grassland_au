@@ -61,7 +61,7 @@ run_gday_func <- function(met.folder,exe.name = 'PTP.exe',gday.exe.path='model/g
   exe.path <- file.path(met.folder,exe.name)
   file.copy(gday.exe.path,exe.path,overwrite =T)
   # run the model in the environment
-  target.wd <- setwd(met.folder)
+  target.wd <- setwd(file.path(currunt.wd,met.folder))
   system(exe.name)
   
   print(paste0("gday finished in ",met.folder))
@@ -69,66 +69,66 @@ run_gday_func <- function(met.folder,exe.name = 'PTP.exe',gday.exe.path='model/g
 
 # 
 run.gday.site.func <- function(model.path,
-                               alocation.model ='HUFKEN',
-                               q =1,
-                               q_s =1,
-                               green.frac = -1,
-                               af = 0.025,
-                               decay.rate = 0.03*365,
-                               ar.max = 0.0001,
-                               ar.min = 0,
-                               cover.impact = 1,
-                               do.graze = 'false',
-                               nsc.initial = 0.5,
-                               vcmax.in = 30,
-                               jmax.in=48
+                               alocation.model ='HUFKEN'#,
+                               # q = 1,
+                               # q_s =1#,
+                               # green.frac = -1,
+                               # af = 0.025,
+                               # decay.rate = 0.03*365,
+                               # ar.max = 0.0001,
+                               # ar.min = 0,
+                               # cover.impact = 1,
+                               # do.graze = 'false',
+                               # nsc.initial = 0.5,
+                               # vcmax.in = 30,
+                               # jmax.in=48
                                
 ){
   
   # test Hufkens####
-  # model path
-  # model.path = 'model/test_hufken/'
-  # change param values
-  change_par_func(paste0(model.path,'par.cfg'),
+  # # model path
+  # # model.path = 'model/test_hufken/'
+  # # change param values
+  change_par_func(file.path(model.path,'par.cfg'),
                   'alloc_model',alocation.model)
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'c_alloc_fmax',af)
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'c_alloc_rmax',ar.max)
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'c_alloc_rmin',ar.min)
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'fdecay',decay.rate)
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'fracteaten',0)
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'c_alloc_fmax',af)
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'c_alloc_rmax',ar.max)
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'c_alloc_rmin',ar.min)
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'fdecay',decay.rate)
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'fracteaten',0)
   # 
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'q',q)
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'q_s',q_s)
-  # this is the function that controls if growth depends on existing cover
-  # 1=yes 0=no
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'use_cover',cover.impact)
-  
-  # the rainfall threshold for growth to start
-  # set to <0 means growth can occur anytime
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'green_sw_frac',green.frac)
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'q',q)
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'q_s',q_s)
+  # # this is the function that controls if growth depends on existing cover
+  # # 1=yes 0=no
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'use_cover',cover.impact)
   # 
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'vcmax',30)
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'jmax',30*1.6)
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'ps_pathway','C3')
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'g1','4.2')
-  
-  # control
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'grazing',do.graze)
-  
+  # # the rainfall threshold for growth to start
+  # # set to <0 means growth can occur anytime
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'green_sw_frac',green.frac)
+  # # 
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'vcmax',30)
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'jmax',30*1.6)
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'ps_pathway','C3')
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'g1','4.2')
+  # 
+  # # control
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'grazing',do.graze)
+  # 
   
 
   # # # set initial pool size
@@ -138,41 +138,41 @@ run.gday.site.func <- function(model.path,
   #                 'shoot',0.0)
   # # nsc storage pool
   # # either this or shoot need to be above 0 or there will never be any plant
-  # #
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'nsc',nsc.initial)
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'sla',30.0)#AK has 50 g m-2 for TT; model need m2 kg
-  # add soil water conditions
-  soil.depth <- 700 #mm
-  root.depth <- 1000
-  fc <- 0.3
-  wp <- 0.05
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'topsoil_depth',soil.depth)
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'theta_wp_topsoil',wp )
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'theta_fc_topsoil',fc )
-  
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'theta_fc_root',fc )
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'theta_wp_root',wp )
-
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'sw_stress_model',0)
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'calc_sw_params','false')
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'wcapac_topsoil',soil.depth * (fc - wp))
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'wcapac_root',root.depth * (fc - wp))
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'rooting_depth',root.depth)
-  change_par_func(paste0(model.path,'par.cfg'),
-                  'qs','1.0')
+  # # #
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'nsc',nsc.initial)
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'sla',30.0)#AK has 50 g m-2 for TT; model need m2 kg
+  # # add soil water conditions
+  # soil.depth <- 700 #mm
+  # root.depth <- 1000
+  # fc <- 0.3
+  # wp <- 0.05
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'topsoil_depth',soil.depth)
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'theta_wp_topsoil',wp )
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'theta_fc_topsoil',fc )
   # 
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'theta_fc_root',fc )
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'theta_wp_root',wp )
+  # 
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'sw_stress_model',0)
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'calc_sw_params','false')
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'wcapac_topsoil',soil.depth * (fc - wp))
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'wcapac_root',root.depth * (fc - wp))
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'rooting_depth',root.depth)
+  # change_par_func(paste0(model.path,'par.cfg'),
+  #                 'qs','1.0')
+  # # 
   # # # # set water storage to 0
   # change_par_func(paste0(model.path,'par.cfg'),
   #                 'pawater_root',0.25*0.1*root.depth)
