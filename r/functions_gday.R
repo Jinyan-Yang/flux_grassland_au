@@ -129,6 +129,7 @@ run.gday.site.func <- function(model.path,
   # change_par_func(paste0(model.path,'par.cfg'),
   #                 'grazing',do.graze)
   # 
+
   
 
   # # # set initial pool size
