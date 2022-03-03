@@ -10,13 +10,13 @@ for (fld.i in seq_along(folder.vec)) {
   out.ls[[fld.i]] <- tmp.df
 }
 names(out.ls) <- folder.vec
-
+saveRDS(out.ls,'cache/gday.out.rds')
 # read all cover data ####
-pace.df <- readRDS('data/gcc.met.pace.df.rds')
-ym.df <- readRDS('data/ym.con.gcc.df.rds')
-flux.df <- readRDS('data/flux.con.gcc.df.rds')
+pace.df <- readRDS('cache/gcc.met.pace.df.rds')
+ym.df <- readRDS('cache/ym.con.gcc.df.rds')
+flux.df <- readRDS('cache/flux.con.gcc.df.rds')
 yanco.df <- readRDS('cache/flux_OZflux_yanco.rds')
-yanco.modis.lai.df <- read.csv('data/modis_lai_stp_ync.csv')
+yanco.modis.lai.df <- read.csv('cache/modis_lai_stp_ync.csv')
 yanco.modis.lai.df$lai.yanco <- yanco.modis.lai.df$Yanco / 10
 yanco.modis.lai.df$Date <- as.Date(yanco.modis.lai.df$system.time_start,'%B %d, %Y')
 stp.df <- readRDS('cache/flux_stp_processed.rds')
@@ -103,7 +103,7 @@ out.growth.ls <- list()
 for (fld.i in seq_along(out.ls)) {
   
   site.nm <- substr(names(out.ls)[plot.i],1,3)
-  # senec rate
+  # senec rate
   if(site.nm == 'flu')site.nm = 'flux'
   if(site.nm == 'ym_')site.nm = 'ym'
   
