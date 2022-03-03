@@ -66,6 +66,9 @@ for (i in seq_along(folder.nm.vec)) {
   change_par_func(file.path(folder.nm.vec[i],'par.cfg'),
                   'wcapac_topsoil',300*(.13-0.05))
   
+  change_par_func(file.path(folder.nm.vec[i],'par.cfg'),
+                  'fractup_soil','1.0')
+  
     # add havest date
   change_par_func(file.path(folder.nm.vec[i],'par.cfg'),
                   'year_harvest',paste0(pace.harvest.date.df.spc$yr,pace.harvest.date.df.spc$doy,',',collapse = ''))
@@ -121,5 +124,16 @@ for (i in seq_along(folder.nm.vec)) {
   }
   Sys.sleep(2)
 }
+
+
+# 
+
+out.Kan.grass.df <- read.csv('model/Kan_grass/output.csv')
+plot(out.Kan.grass.df$wtfac_root)
+
+out.Kan.hufken.df <- read.csv('model/Kan_hufken/output.csv')
+max(diff(out.Kan.hufken.df$lai),na.rm=T)
+
+# 
 
 

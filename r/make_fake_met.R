@@ -46,6 +46,6 @@ names(met.fake.df) <- c('#year','doy',
                         'wind','pres','wind_am','wind_pm',
                         'par_am','par_pm')
 
-write.csv(met.fake.df,'model/test_hufken/met.csv',row.names = F,quote=F)
-write.csv(met.fake.df,'model/test_sgs/met.csv',row.names = F,quote=F)
-write.csv(met.fake.df,'model/test_original/met.csv',row.names = F,quote=F)
+write.csv(met.fake.df,'test/hufken/met.csv',row.names = F,quote=F)
+# write.csv(met.fake.df,'test/test_sgs/met.csv',row.names = F,quote=F)
+write.csv(met.fake.df,'test/grass/met.csv',row.names = F,quote=F)

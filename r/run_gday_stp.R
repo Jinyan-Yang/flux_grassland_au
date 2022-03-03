@@ -1,5 +1,5 @@
 # run gday for flux site#####
-# spin up
+# spin up####
 make.gday.cfg.func(file.path('model/stp_spinup','par.cfg'))
 # 
 change_par_func(file.path('model/stp_spinup','par.cfg'),
@@ -23,20 +23,20 @@ years.last <- years.vec[(length(years.vec)-21):(length(years.vec)-1)]
 
 spin.last <- spin.df[spin.df$year %in% years.last,]
 
-plot(spin.last$shoot)
-plot(spin.last$root)
-plot(spin.last$wtfac_root)
-plot(spin.last$inorgn)
-plot(spin.last$lai)
-
-plot(spin.df$inorgn)
-plot(spin.df$shoot)
-plot(spin.df$root[1:(365*4)])
-plot(spin.df$npp[1:(365*4)])
-plot(spin.df$lai[1:(365*4)])
-plot(spin.df$wtfac_top[1:(365*4)])
-abline(h=0.5)
-plot(spin.df$wtfac_root[1:(365*4)])
+# plot(spin.last$shoot)
+# plot(spin.last$root)
+# plot(spin.last$wtfac_root)
+# plot(spin.last$inorgn)
+# plot(spin.last$lai)
+# 
+# plot(spin.df$inorgn)
+# plot(spin.df$shoot)
+# plot(spin.df$root[1:(365*4)])
+# plot(spin.df$npp[1:(365*4)])
+# plot(spin.df$lai[1:(365*4)])
+# plot(spin.df$wtfac_top[1:(365*4)])
+# abline(h=0.5)
+# plot(spin.df$wtfac_root[1:(365*4)])
 
 write.csv(spin.last,'model/stp_spinup/spin_up_stp.csv')
 
@@ -63,7 +63,6 @@ change_par_func(paste0('model/stp_hufken/','par.cfg'),
 # 
 change_par_func(file.path('model/stp_hufken','par.cfg'),
                 'vcmax','39.0')
-
 change_par_func(file.path('model/stp_hufken','par.cfg'),
                 'jmax','176.0')
 change_par_func(file.path('model/stp_hufken','par.cfg'),
@@ -73,7 +72,6 @@ change_par_func(file.path('model/stp_hufken','par.cfg'),
 # 
 change_par_func(file.path('model/stp_grass','par.cfg'),
                 'vcmax','39.0')
-
 change_par_func(file.path('model/stp_grass','par.cfg'),
                 'jmax','176.0')
 change_par_func(file.path('model/stp_grass','par.cfg'),
@@ -82,8 +80,49 @@ change_par_func(file.path('model/stp_grass','par.cfg'),
                 'g1','1.62')
 change_par_func(file.path('model/stp_grass','par.cfg'),
                 'q_s',0)
+# 
+# 
+change_par_func(file.path('model/stp_grass','par.cfg'),
+                'theta_wp_topsoil',0.08)
+change_par_func(file.path('model/stp_grass','par.cfg'),
+                'theta_fc_topsoil',0.26)
+change_par_func(file.path('model/stp_grass','par.cfg'),
+                'theta_wp_root',0.08)
+change_par_func(file.path('model/stp_grass','par.cfg'),
+                'theta_fc_root',0.26)
+change_par_func(file.path('model/stp_grass','par.cfg'),
+                'wcapac_root',1000*(0.26-0.08))
+change_par_func(file.path('model/stp_grass','par.cfg'),
+                'wcapac_topsoil',300*(0.26-0.08))
+# # 
+# change_par_func(file.path('model/stp_hufken','par.cfg'),
+#                 'theta_wp_topsoil',0.01)
+# change_par_func(file.path('model/stp_hufken','par.cfg'),
+#                 'theta_fc_topsoil',0.15)
+# change_par_func(file.path('model/stp_hufken','par.cfg'),
+#                 'theta_wp_root',0.01)
+# change_par_func(file.path('model/stp_hufken','par.cfg'),
+#                 'theta_fc_root',0.15)
+# change_par_func(file.path('model/stp_hufken','par.cfg'),
+#                 'wcapac_root',1000*(0.15-0.01))
+# change_par_func(file.path('model/stp_hufken','par.cfg'),
+#                 'wcapac_topsoil',300*(.15-0.01))
 
-
+# 
+change_par_func(file.path('model/stp_hufken','par.cfg'),
+                'theta_wp_topsoil',0.08)
+change_par_func(file.path('model/stp_hufken','par.cfg'),
+                'theta_fc_topsoil',0.26)
+change_par_func(file.path('model/stp_hufken','par.cfg'),
+                'theta_wp_root',0.08)
+change_par_func(file.path('model/stp_hufken','par.cfg'),
+                'theta_fc_root',0.26)
+change_par_func(file.path('model/stp_hufken','par.cfg'),
+                'wcapac_root',1000*(0.26-0.08))
+change_par_func(file.path('model/stp_hufken','par.cfg'),
+                'wcapac_topsoil',300*(0.26-0.08))
+# change_par_func(file.path('model/stp_hufken','par.cfg'),
+#                 'q_s',0.1)
 
 # 
 run.gday.site.func('model/stp_grass/',alocation.model ='GRASSES')

@@ -90,7 +90,50 @@ for (plot.i in seq_along(names(out.ls))) {
 
   
 }
+
+
+
 dev.off()
+
+
+empircal.spc.vec <- c('Bis','Dig','Luc','Fes','Rye','Kan','Rho','Pha','ym','flux')
+# 
+par.df <- read.csv('cache/fittedParValue.csv')
+out.growth.ls <- list()
+for (fld.i in seq_along(out.ls)) {
+  
+  site.nm <- substr(names(out.ls)[plot.i],1,3)
+  # senec rate
+  if(site.nm == 'flu')site.nm = 'flux'
+  if(site.nm == 'ym_')site.nm = 'ym'
+  
+  if(site.nm %in% empircal.spc.vec){
+  r.sec <- par.df$f.sec[par.df$site == site.nm]
+}else if(site.nm%in% c('stp','yan')){
+  r.sec <- 0.05823409
+  }else{
+    stop('check site name')
+  }
+  
+  # 
+  model.type <- grep('grass',names(out.ls)[fld.i])
+  
+  if(length(model.type)>0){
+    lai.all = max(diff(out.ls[[fld.i]]$lai),na.rm=T) + abs(min(diff(out.ls[[fld.i]]$lai),na.rm=T))
+  }else{
+    lai.all = max(diff(out.ls[[fld.i]]$lai),na.rm=T)
+  }
+  
+
+  out.growth.ls[[fld.i]] <- data.frame(
+    spc = names(out.ls)[fld.i],
+    r.rowth.gday =  lai.all
+    
+  )
+ 
+}
+out.growth.df <- do.call(rbind,out.growth.ls)
+
 
 # plot(lai~Date,data = out.ls[['Kan_hufken']],type='l',lwd=3)
 # plot(lai~Date,data = out.ls[['ym_grass']],type='l',lwd=3)
@@ -98,6 +141,40 @@ dev.off()
 plot(wtfac_topsoil~Date,data = out.ls[['ym_hufken']],type='l',lwd=3)
 plot(wtfac_topsoil~Date,data = out.ls[['Luc_hufken']],type='l',lwd=3)
 
+
+plot(lai~Date,data = out.ls[['yan_hufken']],type='l',lwd=3,col='darkseagreen',
+     xlim=range(out.ls[['yan_hufken']]$Date),
+     xlab='',ylab='LAI')
+plot(lai~Date,data = out.ls[['yan_grass']],type='l',lwd=3,col='darkseagreen',
+     xlim=range(out.ls[['yan_hufken']]$Date),
+     xlab='',ylab='LAI')
+
+plot(lai~Date,data = out.ls[['stp_hufken']],type='l',lwd=3,col='darkseagreen',
+     xlim=range(out.ls[['stp_hufken']]$Date),
+     xlab='',ylab='LAI')
+
+plot(lai~Date,data = out.ls[['stp_grass']],type='l',lwd=3,col='darkseagreen',
+     xlim=range(out.ls[['stp_grass']]$Date),
+     xlab='',ylab='LAI')
+
+
+plot(wtfac_root~Date,data = out.ls[['stp_hufken']],type='l',lwd=3,col='darkseagreen',
+     xlim=range(out.ls[['stp_hufken']]$Date),
+     xlab='',ylab='w frac')
+
+plot(et~Date,data = out.ls[['stp_hufken']],type='l',lwd=3,col='darkseagreen',
+     xlim=range(out.ls[['stp_hufken']]$Date),
+     xlab='',ylab='w et')
+
+plot((c(0,diff(pawater_root)) + et)~Date,data = out.ls[['stp_hufken']],type='l',lwd=3,col='darkseagreen',
+     xlim=range(out.ls[['stp_hufken']]$Date),
+     xlab='',ylab='w frac',ylim=c(-10,10))
+
+out.ls[['stp_hufken']]$wtfac_root
+out.ls[['stp_hufken']]$et
+(out.ls[['stp_hufken']]$pawater_root / 1000-0.05) / (0.15-0.05)
+
+out.ls[['Rho_hufken']]$pawater_root
 # 
 # plot(lai~Date,data = out.ls[['stp_hufken']],type='l',lwd=3)
 # plot(lai~Date,data = out.ls[['stp_grass']],type='l',lwd=3)

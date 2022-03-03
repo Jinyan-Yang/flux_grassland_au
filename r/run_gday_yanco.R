@@ -7,8 +7,8 @@ change_par_func(file.path('model/yanco_spinup','par.cfg'),
                 'sla','13.1')
 change_par_func(file.path('model/yanco_spinup','par.cfg'),
                 'g1','1.62')
-change_par_func(file.path('model/yanco_spinup','par.cfg'),
-                'alloc_model','HUFKEN')
+# change_par_func(file.path('model/yanco_spinup','par.cfg'),
+#                 'alloc_model','HUFKEN')
 # 
 
 run_gday_func('model/yanco_spinup/',exe.name = 'PTP.exe',
@@ -81,8 +81,40 @@ change_par_func(file.path('model/yan_grass','par.cfg'),
                 'g1','1.62')
 change_par_func(file.path('model/yan_grass','par.cfg'),
                 'q_s',0)
+# 
+change_par_func(file.path('model/yan_grass','par.cfg'),
+                'theta_wp_topsoil',0.05)
+change_par_func(file.path('model/yan_grass','par.cfg'),
+                'theta_fc_topsoil',0.4)
+change_par_func(file.path('model/yan_grass','par.cfg'),
+                'theta_wp_root',0.05)
+change_par_func(file.path('model/yan_grass','par.cfg'),
+                'theta_fc_root',0.4)
+change_par_func(file.path('model/yan_grass','par.cfg'),
+                'wcapac_root',1000*(0.4-0.05))
+change_par_func(file.path('model/yan_grass','par.cfg'),
+                'wcapac_topsoil',300*(0.4-0.05))
+# 
+change_par_func(file.path('model/yan_hufken','par.cfg'),
+                'theta_wp_topsoil',0.05)
+change_par_func(file.path('model/yan_hufken','par.cfg'),
+                'theta_fc_topsoil',0.4)
+change_par_func(file.path('model/yan_hufken','par.cfg'),
+                'theta_wp_root',0.05)
+change_par_func(file.path('model/yan_hufken','par.cfg'),
+                'theta_fc_root',0.4)
+change_par_func(file.path('model/yan_hufken','par.cfg'),
+                'wcapac_root',1000*(0.4-0.05))
+change_par_func(file.path('model/yan_hufken','par.cfg'),
+                'wcapac_topsoil',300*(0.4-0.05))
+
 
 # 
 run.gday.site.func('model/yan_grass/',alocation.model ='GRASSES')
 
 run.gday.site.func('model/yan_hufken/',alocation.model ='GRASSES')
+
+
+
+out.yan.grass.df <- read.csv('model/yan_grass/output.csv')
+plot(out.yan.grass.df$a_max)
