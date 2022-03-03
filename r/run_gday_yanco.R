@@ -91,9 +91,9 @@ change_par_func(file.path('model/yan_grass','par.cfg'),
 change_par_func(file.path('model/yan_grass','par.cfg'),
                 'theta_fc_root',0.4)
 change_par_func(file.path('model/yan_grass','par.cfg'),
-                'wcapac_root',1000*(0.4-0.05))
+                'wcapac_root',10*(0.4-0.05))
 change_par_func(file.path('model/yan_grass','par.cfg'),
-                'wcapac_topsoil',300*(0.4-0.05))
+                'wcapac_topsoil',1000*(0.4-0.05))
 # 
 change_par_func(file.path('model/yan_hufken','par.cfg'),
                 'theta_wp_topsoil',0.05)
@@ -104,9 +104,15 @@ change_par_func(file.path('model/yan_hufken','par.cfg'),
 change_par_func(file.path('model/yan_hufken','par.cfg'),
                 'theta_fc_root',0.4)
 change_par_func(file.path('model/yan_hufken','par.cfg'),
-                'wcapac_root',1000*(0.4-0.05))
+                'wcapac_root',10*(0.4-0.05))
 change_par_func(file.path('model/yan_hufken','par.cfg'),
-                'wcapac_topsoil',300*(0.4-0.05))
+                'wcapac_topsoil',1000*(0.4-0.05))
+# 
+change_par_func(file.path('model/yan_grass','par.cfg'),
+                'fractup_soil','1.0')
+change_par_func(file.path('model/yan_hufken','par.cfg'),
+                'fractup_soil','1.0')
+
 
 
 # 
@@ -114,7 +120,3 @@ run.gday.site.func('model/yan_grass/',alocation.model ='GRASSES')
 
 run.gday.site.func('model/yan_hufken/',alocation.model ='GRASSES')
 
-
-
-out.yan.grass.df <- read.csv('model/yan_grass/output.csv')
-plot(out.yan.grass.df$a_max)

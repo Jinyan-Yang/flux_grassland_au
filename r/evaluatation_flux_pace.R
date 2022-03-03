@@ -21,7 +21,7 @@ yanco.modis.lai.df$lai.yanco <- yanco.modis.lai.df$Yanco / 10
 yanco.modis.lai.df$Date <- as.Date(yanco.modis.lai.df$system.time_start,'%B %d, %Y')
 stp.df <- readRDS('cache/flux_stp_processed.rds')
 
-# plot lai
+# plot lai####
 pdf('figures/model_lai_evaluation.pdf',width = 8,height = 8*.618)
 
 # 
@@ -95,7 +95,7 @@ for (plot.i in seq_along(names(out.ls))) {
 
 dev.off()
 
-
+# compare growth from gday and emprical fitting######
 empircal.spc.vec <- c('Bis','Dig','Luc','Fes','Rye','Kan','Rho','Pha','ym','flux')
 # 
 par.df <- read.csv('cache/fittedParValue.csv')
@@ -119,20 +119,52 @@ for (fld.i in seq_along(out.ls)) {
   model.type <- grep('grass',names(out.ls)[fld.i])
   
   if(length(model.type)>0){
-    lai.all = max(diff(out.ls[[fld.i]]$lai),na.rm=T) + abs(min(diff(out.ls[[fld.i]]$lai),na.rm=T))
+    lai.all = max(diff(out.ls[[fld.i]]$lai),na.rm=T)
   }else{
     lai.all = max(diff(out.ls[[fld.i]]$lai),na.rm=T)
   }
-  
+  tmp.df <- out.ls[[fld.i]]
+  tmp.df <- tmp.df[tmp.df$shoot>0,]
+  senesce.rate <- max(c(tmp.df$deadleaves / tmp.df$shoot),na.rm=T)
 
   out.growth.ls[[fld.i]] <- data.frame(
     spc = names(out.ls)[fld.i],
-    r.rowth.gday =  lai.all
+    r.growth.gday.lai =  lai.all,
+    r.sec.gday.frac = senesce.rate
     
   )
  
 }
 out.growth.df <- do.call(rbind,out.growth.ls)
+saveRDS(out.growth.df,'cache/growth.gday.rds')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # plot(lai~Date,data = out.ls[['Kan_hufken']],type='l',lwd=3)

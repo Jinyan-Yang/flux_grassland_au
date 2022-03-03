@@ -91,9 +91,9 @@ change_par_func(file.path('model/stp_grass','par.cfg'),
 change_par_func(file.path('model/stp_grass','par.cfg'),
                 'theta_fc_root',0.26)
 change_par_func(file.path('model/stp_grass','par.cfg'),
-                'wcapac_root',1000*(0.26-0.08))
+                'wcapac_root',10*(0.26-0.08))
 change_par_func(file.path('model/stp_grass','par.cfg'),
-                'wcapac_topsoil',300*(0.26-0.08))
+                'wcapac_topsoil',1000*(0.26-0.08))
 # # 
 # change_par_func(file.path('model/stp_hufken','par.cfg'),
 #                 'theta_wp_topsoil',0.01)
@@ -118,12 +118,16 @@ change_par_func(file.path('model/stp_hufken','par.cfg'),
 change_par_func(file.path('model/stp_hufken','par.cfg'),
                 'theta_fc_root',0.26)
 change_par_func(file.path('model/stp_hufken','par.cfg'),
-                'wcapac_root',1000*(0.26-0.08))
+                'wcapac_root',10*(0.26-0.08))
 change_par_func(file.path('model/stp_hufken','par.cfg'),
-                'wcapac_topsoil',300*(0.26-0.08))
+                'wcapac_topsoil',1000*(0.26-0.08))
 # change_par_func(file.path('model/stp_hufken','par.cfg'),
 #                 'q_s',0.1)
-
+# 
+change_par_func(file.path('model/stp_grass','par.cfg'),
+                'fractup_soil','1.0')
+change_par_func(file.path('model/stp_hufken','par.cfg'),
+                'fractup_soil','1.0')
 # 
 run.gday.site.func('model/stp_grass/',alocation.model ='GRASSES')
 
