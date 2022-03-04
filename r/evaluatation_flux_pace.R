@@ -11,6 +11,8 @@ for (fld.i in seq_along(folder.vec)) {
 }
 names(out.ls) <- folder.vec
 saveRDS(out.ls,'cache/gday.out.rds')
+# 
+out.ls <- readRDS('cache/gday.out.rds')
 # read all cover data ####
 pace.df <- readRDS('cache/gcc.met.pace.df.rds')
 ym.df <- readRDS('cache/ym.con.gcc.df.rds')
@@ -102,7 +104,7 @@ par.df <- read.csv('cache/fittedParValue.csv')
 out.growth.ls <- list()
 for (fld.i in seq_along(out.ls)) {
   
-  site.nm <- substr(names(out.ls)[plot.i],1,3)
+  site.nm <- substr(names(out.ls)[fld.i],1,3)
   # senec rate
   if(site.nm == 'flu')site.nm = 'flux'
   if(site.nm == 'ym_')site.nm = 'ym'
@@ -118,11 +120,28 @@ for (fld.i in seq_along(out.ls)) {
   # 
   model.type <- grep('grass',names(out.ls)[fld.i])
   
-  if(length(model.type)>0){
-    lai.all = max(diff(out.ls[[fld.i]]$lai),na.rm=T)
+  if(site.nm %in% c('Bis','Luc','Fes','Rye','Pha')){
+    sla = 9.8
   }else{
-    lai.all = max(diff(out.ls[[fld.i]]$lai),na.rm=T)
+    sla = 13.1
   }
+  sla.pace <- 20#m2 /kg DM
+  lai.all <- max((out.ls[[fld.i]]$cpleaf),na.rm=T) * sla *0.1 * 2
+  lai.pace <- max((out.ls[[fld.i]]$cpleaf),na.rm=T) * sla.pace *0.1 * 2
+  
+  if(site.nm %in% unique(par.df$site)){
+    lai.pace.fit <- -2*log(1-par.df$f.growth[par.df$site == site.nm]) 
+  }else{
+    lai.pace.fit <-NA
+  }
+  
+  
+  # if(length(model.type)>0){
+  #   lai.all = max(diff(out.ls[[fld.i]]$lai),na.rm=T)
+  # }else{
+  #   lai.all = max(diff(out.ls[[fld.i]]$lai),na.rm=T)
+  # }
+  
   tmp.df <- out.ls[[fld.i]]
   tmp.df <- tmp.df[tmp.df$shoot>0,]
   senesce.rate <- max(c(tmp.df$deadleaves / tmp.df$shoot),na.rm=T)
@@ -130,6 +149,8 @@ for (fld.i in seq_along(out.ls)) {
   out.growth.ls[[fld.i]] <- data.frame(
     spc = names(out.ls)[fld.i],
     r.growth.gday.lai =  lai.all,
+    r.growth.gday.lai.paceSLA =  lai.pace,
+    r.growth.fit.lai = lai.pace.fit,
     r.sec.gday.frac = senesce.rate
     
   )
